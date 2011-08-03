@@ -1,4 +1,4 @@
-from os.path import getmtime
+from os.path import getmtime, exists
 from datetime import datetime
 
 def update_file(deps, target, cb, *params):
@@ -8,8 +8,11 @@ def update_file(deps, target, cb, *params):
     """
 
     update = False
-    target_mtime = datetime.fromtimestamp(getmtime(target))
+    if not exists(target):
+        cb(deps, target, *params)
+    else:
+        target_mtime = datetime.fromtimestamp(getmtime(target))
 
-    for i in deps:
-        if target_mtime < datetime.fromtimestamp(getmtime(i)):
-            cb(deps, target, *params)
+        for i in deps:
+            if target_mtime < datetime.fromtimestamp(getmtime(i)):
+                cb(deps, target, *params)
