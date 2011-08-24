@@ -45,4 +45,4 @@ def run(cfg, env):
             deps = template['dependencies'] if 'dependencies' in template else []
 
             tmpl = env.get_template(template['file'])
-            update_file(deps + [tmpl.filename], out_file, process_file, tmpl, ctx)
+            update_file([tmpl.filename] + deps, out_file, process_file, tmpl, ctx)
